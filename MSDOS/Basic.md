@@ -21,11 +21,11 @@ FOR %%i IN (cat dog hen) do (
 ### Files in current directory
 Use the following command to iterate over only files in the current directory.
 ```batch
-FOR /R %%i IN (*) DO ECHO %%i
+FOR %%i IN (*) DO ECHO %%i
 ```
 
 ### Files in current and sub directories
 Use the following command to iterate over only files in the current and all sub directories.
 ```batch
-FOR %%i IN (*) DO ECHO %%i
+FOR /R %%i IN (*) DO ECHO %%i
 ```
