@@ -1,3 +1,7 @@
+# Basic Commands
+## Clear the screen
+Command `CLS` is used to clear the screen.
+
 # For Loop
 ## Basic syntax
 
