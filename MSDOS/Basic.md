@@ -2,6 +2,14 @@
 ## Clear the screen
 Command `CLS` is used to clear the screen.
 
+## Prevent echo of command
+Every command that is run is printed on screen, which can make analyzing the real output difficult.
+There is a way to turn off echoing of the command that is run. Issue `@ECHO OFF` to turn off the printing of command.
+```bat
+@ECHO OFF
+ECHO "The only output"
+```
+
 # For Loop
 ## Basic syntax
 
