@@ -42,6 +42,15 @@ The flag `/R` has to be used to iterate recursively.
 FOR /R %%i IN (*) DO ECHO %%i
 ```
 
+Iterate over only files from all sub directories except the files in current directory.  
+For this, we can first iterate over all the sub directories using the `/D` flag and recurse using `/R` flag.  
+Then iterate over only files in each of these sub directories.
+```bat
+FOR /D /R %%i IN (*) DO (
+  FOR %%j IN ("%%i/*") DO ECHO %%j
+)
+```
+
 ### Iterate over only directories
 Use the following command to iterate over only folders in the current directory.
 The flag `/D` has to be used to iterate over only folders.
