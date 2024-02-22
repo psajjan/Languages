@@ -3,8 +3,8 @@
 ## String Related
 
 ### Converting string to array and access its words
-Lets say there is a string with spaces in between and we want to access its individual words,  
-then first we need to convert it into array and then access individual words using `[]` operator.
+Lets say there is a string with spaces in between and we want to access its individual words
+To do that first we need to convert it into an array by putting it into the `()` operator and then access individual words using `[]` operator.
 
 ```csh
 set mystr = "hello world thank you"
