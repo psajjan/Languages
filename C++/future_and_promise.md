@@ -10,6 +10,8 @@ A `std::future` is always associated with a `std::promise`. A future is used to 
 
 First thing to do is to create a promise and get the corresponding future object from it using the `get_future()` member function.
 ```C++
+#include <future>
+
 // This will be the write end.
 std::promise<int> promise;
 
@@ -20,10 +22,12 @@ auto future = promise.get_future();
 Then create a thread which will be computating a value and use the promise to set that value, so that in the main thread using future, this value can be accessed.
 ```C++
 std::thread T1([&promise]() {
-  int value = 0;
-  // do some computation
-  promise.set_value(value);
-  // continues to do other processing
+    int value = 0;
+
+    // do some computation
+    promise.set_value(value);
+
+    // continues to do other processing
 });
 
 // In main thread, wait and read that value.
@@ -35,6 +39,8 @@ T1.join();
 
 As you can see, you use `std::promise::set_value()` from the callee-thread to set the value to be communicated. `std::future` object have a method `get()` which is used to return this value.
 Actually, `get()` calls `std::future::wait()` until the return value is available, so you can also use `wait()` if you don't want to explicitly retrieve the value as soon as it is ready.
+
+
 
 ## `std::future` with `std::async`
 C++ `std::async` is a function template that takes functions or function objects (basically called callbacks) as input and run them asynchronously.
@@ -101,6 +107,22 @@ int main ()
     return 0;
 }
 ```
+
+## Waiting for Futures
+One thing to mention is that there exist two other ways of waiting for a future other than the plain `wait()`. These two are:
+
+1. `std::future::wait_for`, which waits for a given (`std::chrono`) duration.
+2. `std::future::wait_until`, which waits until a given (`std::chrono`) time-point.
+
+Note that for (1) `std::chrono` literals are especially nice (future.wait_for(100ns)).
+
+Both of these methods return one of three codes upon finishing:
+
+1. `std::future_status::ready`: The future is ready.
+2. `std::future_status::timeout`: The future was not yet ready after waiting.
+3. `std::future_status::deferred`: The future is actually deferred and was not yet started.
+
+
 
 
 
