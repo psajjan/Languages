@@ -53,11 +53,12 @@ When specifying the launch policy, the first argument is the policy itself which
 
 #### Without specifying policy
 
-In the above syntax, the launch policy is not specified in the function arguments. Launch policy is automatically selected, which is launch:: async | launch:: deferred.
+In the below syntax, the launch policy is not specified in the function arguments. Launch policy is automatically selected, which is launch:: async | launch:: deferred.
 
 ```C++
-int f(int x) {
-	return x + 1;
+int f(int x)
+{
+    return x + 1;
 }
 
 // Note that a peculiarity about std::async is
@@ -89,10 +90,12 @@ bool check_even (int num) {
 int main ()
 {
     // Calling the above function check_even() asynchronously and storing the result in future object.
-    std::future<bool> future = std::async(check_even, 10);
+    std::future<bool> future = std::async(launch::deferred, check_even, 10);
 
     // retrieving the exact value from future object and waiting for check_even to return
-    bool rs = future.get();
+    bool result = future.get();
+
+    std::cout << result.get() << std::endl;
 
     return 0;
 }
