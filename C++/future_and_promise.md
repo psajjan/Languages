@@ -45,11 +45,58 @@ In order to exact the value from the future, its member `get()` needs to be call
 In C++, async functions can we used in 2 ways, with or without specifying the policies in the function arguments.
 When specifying the launch policy, the first argument is the policy itself which defines the asynchronous behavior of the function.
 
-| S.NO | Policy | Behavior !
-| 1 | launch::async ||
-| 2 | launch::deferred ||
-| 3 | launch::async launch::deferred ||
+| S.NO | Policy | Behavior |  
+|------|--------|----------|
+| 1 | launch::async | This launch policy assures the async behavior of the function, which means that the callable function will be executed in a new thread immediately |  
+| 2 | launch::deferred | In this launch policy, a callable function is not executed in the new thread; instead, it follows the non-async behavior. It follows the lazy evaluation policy in which the call to the function is deferred (postponed) till the previous thread calls the get on the future object, which makes the shared state again accessible |  
+| 3 | launch::async\|launch::deferred | This is an automatic launch policy. In this policy, the behavior is not defined. The system can choose either asynchronous or deferred depending on the implementation according to the optimized availability of the system. Programmers have no control over it on anything. |  
 
+#### Without specifying policy
+
+In the above syntax, the launch policy is not specified in the function arguments. Launch policy is automatically selected, which is launch:: async | launch:: deferred.
+
+```C++
+int f(int x) {
+	return x + 1;
+}
+
+// Note that a peculiarity about std::async is
+// that this call will not necessarily result in
+// f being run concurrently; it is based on the
+// scheduler's decision (to avoid oversubscription)
+auto result = std::async(f, 5);
+
+std::cout << result.get() << std::endl;
+```
+
+#### With specifying policy
+
+```C++
+// Example of checking the number is even or not using async
+#include <iostream>       // library used for std::cout
+#include <future>         // library used for std::async and std::futur
+
+// Function to checking if the number is even or not.
+bool check_even (int num) {
+    std::cout << "Hello I am inside the function!! \n";
+    
+    if (num % 2 == 0) {
+        return true;
+    }
+    return false;
+}
+
+int main ()
+{
+    // Calling the above function check_even() asynchronously and storing the result in future object.
+    std::future<bool> future = std::async(check_even, 10);
+
+    // retrieving the exact value from future object and waiting for check_even to return
+    bool rs = future.get();
+
+    return 0;
+}
+```
 
 
 
