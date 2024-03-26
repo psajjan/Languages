@@ -31,3 +31,6 @@ int value = future.get();
 // Join the thread
 T1.join();
 ```
+
+As you can see, you use `std::promise::set_value()` from the callee-thread to set the value to be communicated. `std::future` object have a method `get()` which is used to return this value.
+Actually, `get()` calls `std::future::wait()` until the return value is available, so you can also use `wait()` if you don't want to explicitly retrieve the value as soon as it is ready.
