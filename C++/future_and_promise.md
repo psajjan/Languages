@@ -5,7 +5,12 @@ The `std::future` and `std::promise` were introduced in C++11's concurrency API 
 The `std::promise` represents the producer/write-end and `std::future` represents the consumer/read-end.
 Most common use case of these is when a thread wants to read a value computed by another thread. In other words, a thread wants to communicate a value to another thread.
 
-## `std::future` with `std::promise`
+There are three ways in which you can get a future.
+1. From promise
+2. From async
+3. From packaged task
+
+## `std::future` from `std::promise`
 A `std::future` is always associated with a `std::promise`. A future is used to wait for some value, while the promise is used to supply that precise value.
 
 First thing to do is to create a promise and get the corresponding future object from it using the `get_future()` member function.
@@ -40,9 +45,7 @@ T1.join();
 As you can see, you use `std::promise::set_value()` from the callee-thread to set the value to be communicated. `std::future` object have a method `get()` which is used to return this value.
 Actually, `get()` calls `std::future::wait()` until the return value is available, so you can also use `wait()` if you don't want to explicitly retrieve the value as soon as it is ready.
 
-
-
-## `std::future` with `std::async`
+## `std::future` from `std::async`
 C++ `std::async` is a function template that takes functions or function objects (basically called callbacks) as input and run them asynchronously.
 When you call `std::async`, it returns a `std::future` which is used to keep the result of the above callback.
 In order to exact the value from the future, its member `get()` needs to be called.
@@ -123,9 +126,37 @@ Both of these methods return one of three codes upon finishing:
 3. `std::future_status::deferred`: The future is actually deferred and was not yet started.
 
 
+## Complete Example
 
-
-
+```C++
+#include <future>
+#include <iostream>
+#include <thread>
+ 
+int main()
+{
+    // future from a packaged_task
+    std::packaged_task<int()> task([]{ return 7; }); // wrap the function
+    std::future<int> f1 = task.get_future(); // get a future
+    std::thread t(std::move(task)); // launch on a thread
+ 
+    // future from an async()
+    std::future<int> f2 = std::async(std::launch::async, []{ return 8; });
+ 
+    // future from a promise
+    std::promise<int> p;
+    std::future<int> f3 = p.get_future();
+    std::thread([&p]{ p.set_value_at_thread_exit(9); }).detach();
+ 
+    std::cout << "Waiting..." << std::flush;
+    f1.wait();
+    f2.wait();
+    f3.wait();
+    std::cout << "Done!\nResults are: "
+              << f1.get() << ' ' << f2.get() << ' ' << f3.get() << '\n';
+    t.join();
+}
+```
 
 
 
