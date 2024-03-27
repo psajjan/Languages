@@ -10,7 +10,7 @@ However, a reference is a stubborn alias of an object that presents some challen
 3. Have a reference as a non-static member inside a class makes the class non-assignable (default copy-assignment operator is deleted). Move semantics doesn't make sense with a reference member.
 4. A reference to reference, storing references in any container and pointer to a reference are forbidden in C++.
 
-Lets look at an example where you pass a reference to a function template but the type deduced in not a reference.
+Lets look at an example where you want pass a reference to a function template but the type deduced in not a reference. We will look at the solution later.
 ```C++
 templace <typename T>
 void increment(T n)
@@ -20,11 +20,19 @@ void increment(T n)
 
 int main()
 {
+    // x is of type int so the template type is deduced to int and x is passed by value
     int x = 10;
-    increment(x); // x is passed by value
+    increment(x); 
 
+    // eventhough the type of xref is a reference int&, mere appearance of it is just treated as the original non-reference type that it is referring to.
     int& xref = x;
-    increment(xref); // eventhough the type of xref is a reference int&, 
+    increment(xref);
+
+    // Solution-1: Explicitly specify the type
+    increment<int&>(x);
+
+    // Solution-2: Use std:ref
+    increment(std::ref(x));
 
     return 0;
 }
