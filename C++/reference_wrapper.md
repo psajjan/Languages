@@ -10,7 +10,31 @@ However, a reference is a stubborn alias of an object that presents some challen
 3. Have a reference as a non-static member inside a class makes the class non-assignable (default copy-assignment operator is deleted). Move semantics doesn't make sense with a reference member.
 4. A reference to reference, storing references in any container and pointer to a reference are forbidden in C++.
 
+```C++
+// PROBLEM 1
+// Empty reference is not possible
+int &ref;
+
+// PROBLEM 2
+int x =10, y = 20;
+int &xref = x, &yref = y;
+xref = yref; // xref still refers x, which is 20 now.
+
+// PROBLEM 3
+// Cannot store references in containers
+std::vector<int&> v; // Error: as we cannot have empty references, assign/rebind references.
+
+
+// PROBLEM 4
+// T&& is not reference to reference, it is rvalue reference
+int a = 10;
+int& aref = a;
+int&& arefref = aref; // not reference to reference, unlike pointer to pointer int**
+```
+
 Lets look at an example where you want pass a reference to a function template but the type deduced in not a reference.
+Solution is that the function template parameter type has to be explicitly specified to pass by reference.
+
 ```C++
 templace <typename T>
 void increment(T n)
