@@ -98,7 +98,20 @@ std::reference_wrapper<std::string> arr[] = {str1, str2};
 std::vector<std::reference_wrapper<std::string>> vec = {r1, r2};
 ```
 
+The only downside is that to access the members of an object `T`, we have to use the `std::reference_wrapper<T>::get()` method.
+Also, to assign to the referred object use `get()`:
 
+```C++
+std::string str{"Hello"};
+
+auto sref = std::ref(str);
+
+std::cout << sref.get().length() << "\n"; //5
+
+sref.get() = "World"; // str is changed to "World"
+
+std::cout << str << "\n"; // World
+```
 
 
 
