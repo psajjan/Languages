@@ -161,7 +161,45 @@ std::pair<const str::string&, int> p2{getStr(), 10}; // No Error -> bad, can hav
 
 ### Container of references
 
+Unlike a reference, a `std::reference_wrapper` is an object and thus satisfies the STL container element requirements (Erasable, to be precise). Therefore, `std::reference_wrapper` can be used as a vector element type.
+
+A `std::reference_wrapper<T>` could be a safe alternative to a pointer type (`T*`) for storing in a vector:
+
+```C++
+int a = 10;
+std::vector<reference_wrapper<int>> v;
+v.push_back(std::ref(a));
+```
+
 ### `std::thread`: Passing arguments by reference
+Lets say, we have a function named `startFunction` which takes some arguments. To run this function in a thread, we have to pass the function arguments when creating the object of std::thread in the constructor as `std::thread(startFunction, args)`. Those arguments are passed by value from the thread creator because the `std::thread` constructor copies or moves the creator's arguments before passing them to the start-function.
+
+Any reference parameter of startFunction cannot bind to a creator's argument. It can only bind to a temporary (only if function accepts `const T&`) created by `std::thread`.
+
+```C++
+void start(int& i) { i += 1; }
+void start_const(const int& i) { }
+
+void createThread() {
+    int x = 10;
+    // x is copied below to a temporary
+    std::thread(start, x).join();        // Error! can't bind temporary to int&.
+    std::thread(start_const, x).join();  // OK. But sort of by-value 
+}
+```
+
+If we want to pass an argument to a startFunction by reference, we can do that by passing a referrence wrapper through `std::ref`, as follows:
+The `std::ref` generates a `reference_wrapper<int>` that eventually implicitly converts to an `int&`, thus binding the `start(int&)`'s reference parameter to the argument passed by the `createThread()`.
+
+```C++
+void createThread() {
+    int x = 10;
+    std::thread(start, std::ref(x)).join(); // OK. By-ref, x is 11 now
+
+    std::thread(start_const, std::ref(x)).join();  // By-ref
+    std::thread(start_const, std::cref(x)).join(); // By-ref 
+}
+```
 
 ### Reference data member in a class
 
