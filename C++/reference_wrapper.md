@@ -83,6 +83,7 @@ The usual way to create an `std::reference_wrapper<T>` is via `std::ref` (or `st
 std::string str1{"Hello"};
 std::string str2{"World"};
 
+// Create reference wrapper
 std::reference_wrapper<std::string> r1 = std::ref(str1);
 auto r2 = std::ref(str2);
 
@@ -98,16 +99,19 @@ std::reference_wrapper<std::string> arr[] = {str1, str2};
 std::vector<std::reference_wrapper<std::string>> vec = {r1, r2};
 ```
 
-The only downside is that to access the members of an object `T`, we have to use the `std::reference_wrapper<T>::get()` method.
-Also, to assign to the referred object use `get()`:
+The only downside is that to access the members of the referred object of type `T`, we have to use the `std::reference_wrapper<T>::get()` method. 
+And to assign to the referred object also we have to use `get()`.
 
 ```C++
 std::string str{"Hello"};
 
+// Create a reference wrapper
 auto sref = std::ref(str);
 
+// Use get() to access members
 std::cout << sref.get().length() << "\n"; //5
 
+// Use get() to re-assign
 sref.get() = "World"; // str is changed to "World"
 
 std::cout << str << "\n"; // World
