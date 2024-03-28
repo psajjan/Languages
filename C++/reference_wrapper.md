@@ -48,7 +48,8 @@ int main()
     int x = 10;
     increment(x); 
 
-    // eventhough the type of xref is a reference int&, mere appearance of it is just treated as the original non-reference type that it is referring to.
+    // eventhough the type of xref is a reference int&, mere appearance of it is just treated as
+    // the original non-reference type that it is referring to.
     int& xref = x;
     increment(xref);
 
@@ -67,6 +68,9 @@ int main()
 A reference wrapper `std::reference_wrapper<T>` is a copy-constructible and copy-assignable wrapper for an object of reference type `T&`.
 It is defined in the header `<functional>`. It gives the non-nullable guarantee of a reference and the pointer-like flexibility to rebind to another object.
 So you get an object that behaves like a reference but can be copied.
+
+It imitates a reference. Contrary to its name, it does not wrap a reference. It works by encapsulating a pointer (T*) and by implicitly converting to a reference (T&).
+It cannot be default constructed or initialized with a temporary; therefore, it cannot be null or invalid.
 
 The usual way to create an `std::reference_wrapper<T>` is via `std::ref` (or `std::cref` for `std::reference_wrapper<const T>`).
 
