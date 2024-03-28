@@ -72,6 +72,60 @@ So you get an object that behaves like a reference but can be copied.
 It imitates a reference. Contrary to its name, it does not wrap a reference. It works by encapsulating a pointer (T*) and by implicitly converting to a reference (T&).
 It cannot be default constructed or initialized with a temporary; therefore, it cannot be null or invalid.
 
+```C++
+std::reference_wrapper<int> nr; //Error! must initialize
+auto ref = std::ref(std::string("Hello")); // Error! no temporary (rvalue) allowed.
+```
+
 The usual way to create an `std::reference_wrapper<T>` is via `std::ref` (or `std::cref` for `std::reference_wrapper<const T>`).
+
+```C++
+std::string str1{"Hello"};
+std::string str2{"World"};
+
+std::reference_wrapper<std::string> r1 = std::ref(str1);
+auto r2 = std::ref(str2);
+
+// Assignment rebinds the reference_wrapper
+// r2 also refers to str1 now 
+r2 = r1;
+
+// Implicit conversion to std::string&
+std::string cstr = r2; // cstr is "Hello"
+
+// Possible to create an array/vector of reference_wrapper
+std::reference_wrapper<std::string> arr[] = {str1, str2};
+std::vector<std::reference_wrapper<std::string>> vec = {r1, r2};
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
