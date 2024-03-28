@@ -53,7 +53,7 @@ int main()
     int& xref = x;
     increment(xref);
 
-    // Solution-1: Explicitly specify the type
+    // Solution-1: Explicitly specify the template parameter type
     increment<int&>(x);
 
     // Solution-2: Use std:ref
@@ -117,7 +117,59 @@ sref.get() = "World"; // str is changed to "World"
 std::cout << str << "\n"; // World
 ```
 
+## Common Use Cases
 
+### With `std::make_pair` and `std::make_tuple`
+We can pass reference wrapper to function templates to pass arguments by references without explicitly specifying the template parameter types (as we have seen in the problems section above).
+This makes creating a pair or a tuple with references easy.
+
+```C++
+int x = 10;
+int y = 20;
+int z = 30;
+
+// Explicitly need to specify the template parameter types as reference type
+std::pair<int&, int> p1{x, y};
+std::tuple<int&, int, int&> t1{x, y, z};
+
+// Simply create reference wrapper and pass.
+auto p2 = std::make_pair(std::ref(x), y);
+auto t2 = std::make_tuple(std::ref(x), y, std::ref(z));
+```
+
+The `make_pair` and `make_tuple` are somewhat irrelevant since the C++17's class template argument deduction (CTAD). But the reasons still apply, now, with the constructors of pair and tuple.
+However, `make_pair` and `make_tuple` decay a `reference_wrapper<T>` to a reference `T&`, whereas, that is not the case with CTAD construction of pair and tuple.
+
+```C++
+std::string m{"Hello"};
+
+std::pair p(std::ref(m), n); 
+std::tuple t(std::ref(m), n, std::ref(s));
+
+std::cout << p.get().length() << std::endl;
+```
+
+Now that we know that a reference wrapper cannot be created with a temporary, following will result in compile error.
+
+```C++
+std::string getStr() { return "Hello"; }
+
+auto p = std::make_pair(std::ref(getStr()), 10);    // Error -> good
+
+std::pair<const str::string&, int> p2{getStr(), 10}; // No Error -> bad, can have undefined behavior
+```
+
+### Container of references
+
+### `std::thread`: Passing arguments by reference
+
+### Reference data member in a class
+
+### Passing a function object by reference
+
+### With bind expressions
+
+### 
 
 
 
