@@ -249,8 +249,29 @@ void process()
 ```
 
 ### With bind expressions
+`std::bind` generates a callable wrapper known as bind expression that forwards the call to a wrapped-callable. A bind expression can have some or all of the wrapped-callable's parameters bound.
 
-### 
+However, the bound arguments are copied or moved in a bind expression.
+
+```C++
+void caw(const std::string& quality, const std::string& food) {
+ std::cout << "A " << quality << " " << food << "\n";
+}
+
+using namespace std::placeholders;  // for _1, _2
+
+std::string donut("donut");
+auto donutcaw = std::bind(caw, _1, donut); //donut is copied
+donutcaw("chocolate"); //A chocolate donut
+```
+
+Therefore, we need to use std::ref (or std::cref) if we want to pass the bound parameters by reference:
+
+```C++
+std::string muffin("muffin");
+auto muffincaw = std::bind(caw, _1, std::ref(muffin));      // muffin is passed by-ref
+muffincaw("delicious");                                     // A delicious muffin
+```
 
 
 
