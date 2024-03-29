@@ -205,6 +205,34 @@ void createThread() {
 
 ### Passing a function object by reference
 
+An `std::reference_wrapper<T>` can be invoked like a function as long as the `T` is a callable. This feature is particularly useful with STL algorithms if we want to avoid copying a large or stateful function object. 
+Besides, T can be any callable – a regular function, a lambda, or a function object.
+
+```C++
+struct MyFilter
+{
+    bool operator()(int i) const
+    {
+        // Filter and process
+        return true;
+    }
+    // big data
+};
+
+void process()
+{
+    std::vector<int> in;
+    std::vector<int> out;
+    MyFilter filter;
+
+    // in and filter are populated/processed....
+
+    // Pass Large by-ref to avoid copy
+    std::copy_if(in1.begin(), in1.end(), std::back_inserter(out), std::ref(filter)); 
+}
+
+```
+
 ### With bind expressions
 
 ### 
