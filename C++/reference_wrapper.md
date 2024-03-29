@@ -203,6 +203,21 @@ void createThread() {
 
 ### Reference data member in a class
 
+Having a reference class member poses problems, as it makes the class non-assignable and practically immovable. The usual practice is to avoid references as class members and use pointers instead.
+
+A `reference_wrapper` offers the best of both worlds.
+
+```C++
+struct A {
+    A(int& i):iRef(i) {}
+    std::reference_wrapper<int> iRef;
+};
+
+A a1(u); 
+A a2(v);
+a1 = w2; // OK
+```
+
 ### Passing a function object by reference
 
 An `std::reference_wrapper<T>` can be invoked like a function as long as the `T` is a callable. This feature is particularly useful with STL algorithms if we want to avoid copying a large or stateful function object. 
