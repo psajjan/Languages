@@ -17,3 +17,8 @@ It represents the current filename.
 | $n       | It is the nth field in the current record |
 | ARGC     | It implies the number of arguments provided at the command line. |
 | ARGV     | It is an array that stores the command-line arguments. The array's valid index ranges from 0 to ARGC-1. |
+| ENVIRON  | It is an associative array of environment variables. |
+| CONVFMT  | It represents the conversion format for numbers. Its default value is %.6g. |
+| RLENGTH  | It represents the length of the string matched by match function. AWK's match function searches for a given string in the input-string. |
+| RSTART   | It represents the first position in the string matched by match function. |
+| SUBSEP   | It represents the separator character for array subscripts and its default value is \034. |
