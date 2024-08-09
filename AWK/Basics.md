@@ -16,6 +16,12 @@ Such a reference automatically creates that array element, with the null string 
 Assigning a value to an array element is done using:
 <pre>array[index] = value</pre>
 
+You can remove an individual element of an array using the delete statement:
+<pre>delete array[index]</pre>
+
+You can delete all the elements of an array with a single statement, by leaving off the subscript in the delete statement.
+<pre>delete array</pre>
+
 ### Testing if an index exists
 You can find out if an element exists in an array at a certain index with the expression.
 <pre>index in array</pre>
@@ -29,6 +35,13 @@ We can use the above expression in `if` statements.
   }
 </pre>
 **NOTE** There is no way to find out if a particular value exists in the array or not, except to scan all the elements.
+
+### Scanning all the elements
+Awk has a special kind of `for` statement for scanning an array:
+<pre>
+  for (key in array)
+    body using array[key]
+</pre>
 
 ## String Functions
 
