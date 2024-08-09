@@ -36,6 +36,16 @@ We can use the above expression in `if` statements.
 </pre>
 **NOTE** There is no way to find out if a particular value exists in the array or not, except to scan all the elements.
 
+To test if a certain index doesn't not exists in the array, you can use any of the following:
+<pre>
+  if ("key1" in myHash == 0) {
+  }
+
+  if (!("key1" in myHash)) {
+  }
+</pre>
+**NOTE** `not` is not a keyword in awk, hence you cannot use `var not in array`.
+
 ### Scanning all the elements
 Awk has a special kind of `for` statement for scanning an array:
 <pre>
