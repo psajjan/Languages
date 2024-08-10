@@ -53,6 +53,17 @@ Awk has a special kind of `for` statement for scanning an array:
     body using array[key]
 </pre>
 
+### Sorting the array
+Use `int asorti(src, dst)` which sorts the indices of `src` array and puts them into a new `dst` array. Using the size of the array, you can then iterate over the destination array to index into the source array. And the good thing is that the `asorti` function returns the number of elements in the source array.
+
+For your example, you would use it like this:
+<pre>
+  n = asorti(src, dst)
+  for (i=1; i<=n; i++) {
+    print dst[i] " : " src[dst[i]]
+}
+</pre>
+
 ## String Functions
 
 ### <pre>gsub(regexp, replaceWith [, target]) - global substitution</pre>
