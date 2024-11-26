@@ -31,7 +31,17 @@ my $size2 = @fruits;
 my $size3 = $#fruits + 1;
 ```
 
-### Functions
+### Sequential Arrays
+PERL offers a shortcut for sequential numbers and letters.
+```perl
+# Shortcut saves time
+@10 = (1 .. 10);
+@100 = (1 .. 100);
+@1000 = (100 .. 1000);
+@abc = (a .. z);
+```
+
+## Functions
 
 #### pop
 It removes and returns the last element from the array. If the array is empty, it return `undef`.
