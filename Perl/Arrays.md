@@ -1,5 +1,36 @@
 # Arrays
 
+## Basics
+
+```perl
+# Define an array
+my @fruits = ('apple', 'kiwi', 'grapes');
+
+# Print entire array
+print "@fruits\n";
+
+# Index to get scalar elements
+print "0: $fruits[0]\n";
+print "1: $fruits[1]\n";
+print "2: $fruits[2]\n";
+
+# Elements can also be indexed backwards using negative integers instead of positive numbers.
+print "0: $fruits[0]\n";
+print "Last: $fruits[-1]\n";
+print "Last but one: $fruits[-2]\n";
+```
+
+### Size
+Following are different ways to get the size of the array.
+```perl
+# If the array is used in scalar context.
+my $size1 = scalar @fruits;
+my $size2 = @fruits;
+
+# Get the index of last element and add 1
+my $size3 = $#fruits + 1;
+```
+
 ### Functions
 
 #### pop
