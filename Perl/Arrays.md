@@ -41,7 +41,7 @@ PERL offers a shortcut for sequential numbers and letters.
 @abc = (a .. z);
 ```
 
-## Functions
+### Add and Remove elements
 
 #### pop
 It removes and returns the last element from the array. If the array is empty, it return `undef`.
@@ -85,4 +85,42 @@ print "@names\n";     # Moo Foo Bar
 my @others = ('Darth', 'Vader');
 unshift @names, @others;
 print "@names\n";     # Darth Vader Moo Foo Bar
+```
+
+#### delete
+Deletes the element using its index.
+```perl
+delete $fruits[$index];
+```
+
+## Sorting
+
+The sort() function sorts each element of an array according to ASCII Numeric standards.
+Because the sort() relies on ASCII Numeric values, problems can arise with sorting capital letters and lower case letters.
+```perl
+@foods = qw(pizza steak chicken burgers);
+@Foods = qw(Pizza Steak chicken burgers);
+
+# SORT 'EM
+@foods = sort(@foods);
+@Foods = sort(@Foods);
+
+# PRINT THE NEW ARRAYS
+print "@foods";   #  burgers chicken pizza steak
+print "@Foods";   #  Pizza Steak burgers chicken
+```
+
+Capital letters have a lower ASCII Numeric value than lowercase letters.  Perhaps the best option is to first transform every element of the array into lowercase letters and then perform the sort function.
+
+```perl
+# TRANSFORM TO LOWERCASE
+foreach $food (@Foods) {
+	push(@foods,  "\L$food");
+}
+
+# SORT 
+@foods = sort(@foods);
+
+# PRINT THE NEW ARRAY
+print "@foods";
 ```
