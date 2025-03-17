@@ -77,3 +77,17 @@ echo $word:q    # Output: "Hello World"
 ```csh
 echo $word:x    # Output: Hello\ World
 ```
+
+#### Default Value Modifiers
+These modifiers allow you to define default values or fallback options for variables.
+
+`:?` — If the variable is undefined, print an error message and exit the script.
+```csh
+echo $undefined_var:?  # Outputs an error message and exits.
+```
+
+`:d` — Use the default value if the variable is not set.
+```csh
+set myvar = ${undefined_var:d "DefaultValue"}
+echo $myvar    # Output: DefaultValue
+```
